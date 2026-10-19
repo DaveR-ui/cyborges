@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AnalystOutput",
+  "description": "Structured return for the analista subagent: verdict, calibrated confidence, alternatives considered, recommendation, full reasoning, one-line summary, and optional re-route.",
+  "type": "object",
+  "properties": {
+    "verdict": {
+      "type": "string",
+      "enum": ["proceed", "reconsider", "abandon"],
+      "description": "Bottom-line judgment on the proposed course of action."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Calibrated confidence in the verdict (0 = no confidence, 1 = certain)."
+    },
+    "alternatives_considered": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "The alternatives weighed before reaching the verdict (at least two)."
+    },
+    "recommendation": {
+      "type": "string",
+      "description": "The concrete recommended next step."
+    },
+    "reasoning": {
+      "type": "string",
+      "description": "The analyst's full chain of thought, in English."
+    },
+    "summary": {
+      "type": "string",
+      "description": "One-line description of the analysis."
+    },
+    "re_route_to": {
+      "type": "string",
+      "enum": ["coder", "tester", "reviewer", "architect", "explorer"],
+      "description": "Optional agent id to send the work to instead. When routing to `coder`, also set `re_route_language`."
+    },
+    "re_route_language": {
+      "type": "string",
+      "enum": ["angular", "go", "css"],
+      "description": "Optional; only meaningful when re_route_to = coder. Selects the coder's language template."
+    }
+  },
+  "required": [
+    "verdict",
+    "confidence",
+    "alternatives_considered",
+    "recommendation",
+    "reasoning",
+    "summary"
+  ],
+  "additionalProperties": false
+}

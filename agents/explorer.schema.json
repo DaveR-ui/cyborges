@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ExplorerOutput",
+  "description": "Structured return for the explorer subagent: files found, a summary, and confidence in completeness.",
+  "type": "object",
+  "properties": {
+    "files_found": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Paths found, relative to the repo root."
+    },
+    "summary": {
+      "type": "string",
+      "description": "One-line description of what was found."
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "description": "Confidence in the completeness of the findings."
+    }
+  },
+  "required": ["files_found", "summary", "confidence"],
+  "additionalProperties": false
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DocumenterOutput",
+  "description": "Structured return for the documenter subagent: docs changed, added, removed, a summary, and follow-ups.",
+  "type": "object",
+  "properties": {
+    "files_changed": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Paths of docs modified."
+    },
+    "files_added": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Paths of docs created."
+    },
+    "files_removed": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Paths of docs removed."
+    },
+    "summary": {
+      "type": "string",
+      "description": "One-line description of the documentation change."
+    },
+    "follow_up": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Follow-up tasks, e.g. index or tag registrations still needed."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Calibrated confidence in this return (0 = no confidence, 1 = certain)."
+    }
+  },
+  "required": ["files_changed", "files_added", "files_removed", "summary", "confidence"],
+  "additionalProperties": false
+}

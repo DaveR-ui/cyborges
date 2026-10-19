@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ArchitectOutput",
+  "description": "Structured return for the architect subagent: design decisions, files the design would touch, and a one-line summary.",
+  "type": "object",
+  "properties": {
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "description": "The decision point being resolved."
+          },
+          "choice": {
+            "type": "string",
+            "description": "The chosen approach."
+          },
+          "rationale": {
+            "type": "string",
+            "description": "Why this choice, citing the canonical doc when relevant."
+          }
+        },
+        "required": ["topic", "choice", "rationale"],
+        "additionalProperties": false
+      },
+      "description": "Design decisions with rationale."
+    },
+    "files_to_touch": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Paths of files the design would touch."
+    },
+    "summary": {
+      "type": "string",
+      "description": "One-line description of the design."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Calibrated confidence in this return (0 = no confidence, 1 = certain)."
+    }
+  },
+  "required": ["decisions", "files_to_touch", "summary", "confidence"],
+  "additionalProperties": false
+}

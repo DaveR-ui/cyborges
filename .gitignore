@@ -1,0 +1,33 @@
+# ── Dependencies ─────────────────────────────────────────────────
+node_modules/
+
+# ── Machine-local overrides (never commit) ───────────────────────
+opencode.local.json
+*.local.json
+
+# Machine-local human slang / personal dictionaries (not created by this repo)
+humans/
+
+# ── Backups / runtime state ──────────────────────────────────────
+.backups/
+.agent-backups/
+*.bak
+*.bak.*
+
+# ── Python bytecode ──────────────────────────────────────────────
+__pycache__/
+*.pyc
+
+# ── Drafts / logs ────────────────────────────────────────────────
+.draft/
+.omo/
+*.log
+
+# ── Secrets (never commit) ───────────────────────────────────────
+service.json
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.secret

@@ -1,0 +1,84 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "opencode-go/deepseek-v4.1-flash",
+  "default_agent": "delivery",
+  "compaction": {
+    "auto": true,
+    "buffer": 10000
+  },
+  "mcp": {
+    "servers": {
+      "playwright": {
+        "type": "local",
+        "command": ["bunx", "@playwright/mcp"]
+      },
+      "angular-cli": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "@angular/cli",
+          "mcp"
+        ]
+      }
+    }
+  },
+  "permissions": [
+    { "action": "question", "resource": "*", "effect": "allow" },
+    { "action": "read", "resource": "*", "effect": "allow" },
+    { "action": "read", "resource": ".env", "effect": "deny" },
+    { "action": "read", "resource": "**/.env", "effect": "deny" },
+    { "action": "read", "resource": "*.env", "effect": "deny" },
+    { "action": "read", "resource": "**/*.env", "effect": "deny" },
+    { "action": "read", "resource": "*.env.*", "effect": "deny" },
+    { "action": "read", "resource": "**/*.env.*", "effect": "deny" },
+    { "action": "read", "resource": "*.env.example", "effect": "allow" },
+    { "action": "read", "resource": "**/*.env.example", "effect": "allow" },
+    { "action": "edit", "resource": "*", "effect": "allow" },
+    { "action": "edit", "resource": ".env", "effect": "deny" },
+    { "action": "edit", "resource": "**/.env", "effect": "deny" },
+    { "action": "edit", "resource": "*.env", "effect": "deny" },
+    { "action": "edit", "resource": "**/*.env", "effect": "deny" },
+    { "action": "edit", "resource": "*.env.*", "effect": "deny" },
+    { "action": "edit", "resource": "**/*.env.*", "effect": "deny" },
+    { "action": "edit", "resource": "*.env.example", "effect": "allow" },
+    { "action": "edit", "resource": "**/*.env.example", "effect": "allow" },
+    { "action": "edit", "resource": "*.key", "effect": "deny" },
+    { "action": "edit", "resource": "**/*.key", "effect": "deny" },
+    { "action": "edit", "resource": "*.secret", "effect": "deny" },
+    { "action": "edit", "resource": "**/*.secret", "effect": "deny" },
+    { "action": "edit", "resource": "*.pem", "effect": "deny" },
+    { "action": "edit", "resource": "**/*.pem", "effect": "deny" },
+    { "action": "shell", "resource": "*", "effect": "allow" },
+    { "action": "shell", "resource": "sudo *", "effect": "deny" },
+    { "action": "shell", "resource": "rm -rf *", "effect": "deny" },
+    { "action": "shell", "resource": "curl *", "effect": "ask" },
+    { "action": "shell", "resource": "wget *", "effect": "ask" },
+    { "action": "shell", "resource": "docker *", "effect": "allow" }
+  ],
+  "references": {
+    "documentation-onrails": {
+      "repository": "https://github.com/DaveR-ui/documentation-onrails",
+      "branch": "main"
+    },
+    "agent-system": {
+      "path": ".",
+      "description": "Global agent-system root (this repo, installed at ~/.config/opencode). Its assets (e.g. protocols/, agents/, scripts/) are NOT resolvable by relative or alias paths — join THIS reference's absolute root with the relative path to read an asset (e.g. ROOT/protocols/prompt-pipeline.md). Never commit machine-specific absolute paths; resolve the root at runtime from this reference."
+    }
+  },
+  "agents": {
+    "delivery":     { "model": "opencode-go/deepseek-v4.1-flash" },
+    "interpreter":  { "model": "opencode/deepseek-v4.1-flash-free" },
+    "coder":        { "model": "opencode/deepseek-v4.1-flash-free" },
+    "documenter":   { "model": "opencode/deepseek-v4.1-flash-free" },
+    "tester":       { "model": "opencode-go/qwen3.8-flash" },
+    "architect":    { "model": "opencode/deepseek-v4.1-flash-free" },
+    "orchestrator": { "model": "opencode-go/deepseek-v4.1-flash" },
+    "reviewer":     { "model": "opencode-go/mimo-v2.6-flash" },
+    "analista":     { "model": "opencode/deepseek-v4.1-flash-free" },
+    "title":        { "model": "opencode/deepseek-v4.1-flash-free" }
+  },
+  "experimental": {
+    "subagent_depth": 4
+  }
+}

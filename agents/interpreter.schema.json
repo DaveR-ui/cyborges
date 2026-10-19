@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "InterpreterOutput",
+  "description": "Routing packet produced by the interpreter subagent (Step 0 of the prompt pipeline): normalized goal, constraints, resolved/unresolved terms, and a clarification decision.",
+  "type": "object",
+  "properties": {
+    "normalized_goal": {
+      "type": "string",
+      "description": "One-sentence description of what the human actually wants, written in English (the packet is produced entirely in English)."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["bug", "task", "feature-design", "update"],
+      "description": "Classification of the request."
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "description": "Confidence in the normalization."
+    },
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Slice IDs from docs/project.md."
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Hard requirements."
+    },
+    "non_goals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Explicit out-of-scope items."
+    },
+    "hidden_assumption": {
+      "type": "string",
+      "description": "'This plan assumes X. If X is wrong, consequence.'"
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Testable acceptance criteria."
+    },
+    "edge_cases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Edge cases to keep in mind."
+    },
+    "resolved_by_lookup": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "raw": {
+            "type": "string",
+            "description": "The term as written by the human."
+          },
+          "resolved": {
+            "type": "string",
+            "description": "The canonical term it maps to."
+          },
+          "source": {
+            "type": "string",
+            "description": "Concrete file (and section where useful) that resolved it."
+          }
+        },
+        "required": ["raw", "resolved", "source"],
+        "additionalProperties": false
+      },
+      "description": "Terms resolved by grep/glob lookups."
+    },
+    "unresolved_questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string",
+            "description": "The open question."
+          },
+          "could_not_resolve": {
+            "type": "string",
+            "description": "Which lookups ran and why they did not settle the term."
+          }
+        },
+        "required": ["question", "could_not_resolve"],
+        "additionalProperties": false
+      },
+      "description": "Terms the lookups could not settle."
+    },
+    "clarification_needed": {
+      "type": "string",
+      "enum": ["yes", "no"],
+      "description": "Whether the blocking questions were asked."
+    },
+    "blocking_questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Only present when clarification_needed = yes."
+    }
+  },
+  "required": [
+    "normalized_goal",
+    "type",
+    "confidence",
+    "modules",
+    "constraints",
+    "non_goals",
+    "hidden_assumption",
+    "acceptance_criteria",
+    "edge_cases",
+    "clarification_needed"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TesterOutput",
+  "description": "Structured return for the tester subagent: test counts, failures, and optional coverage.",
+  "type": "object",
+  "properties": {
+    "tests_run": {
+      "type": "integer",
+      "description": "Number of tests executed."
+    },
+    "tests_passed": {
+      "type": "integer",
+      "description": "Number of tests that passed."
+    },
+    "failures": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Failure signatures for tests that did not pass."
+    },
+    "coverage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Optional code coverage ratio between 0 and 1."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Calibrated confidence in this return (0 = no confidence, 1 = certain)."
+    }
+  },
+  "required": [
+    "tests_run",
+    "tests_passed",
+    "failures",
+    "confidence"
+  ],
+  "additionalProperties": false
+}
