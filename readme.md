@@ -1,4 +1,8 @@
-# DaverAgent — Global opencode Configuration
+# CyBorges — Global opencode Configuration
+
+<p align="center">
+  <img src="assets/cyborges-borges-reading.png" alt="CyBorges — a brass automaton in the likeness of Jorge Luis Borges, reading in a library" width="340">
+</p>
 
 This repository **is** the global configuration of the opencode agent system
 (delivery, orchestrator, coder, tester, …). Clone it into `~/.config/opencode`
@@ -13,10 +17,41 @@ same agents.
   Machine-specific paths (e.g. an MCP server binary) must be provided through a
   gitignored `opencode.local.json` override, never committed here.
 
+## The great brain
+
+This repository is the global configuration of the opencode agent system: the
+agents (delivery, orchestrator, coder, tester, …) and the protocols that
+govern them. It ships no application code — only the conventions by which
+every project on the machine is planned, written, tested, and reviewed.
+
+The name is an homage to **Jorge Luis Borges** — the writer of libraries,
+labyrinths, mirrors, and the vertigo of the infinite. A codebase is built from
+the same material: a prompt forks into paths, some of them dead ends, and the
+work is to walk them without losing the thread. This repository borrows that
+image for its name.
+
+> Es normal que el gran cerebro, el que se encarga de recorrer los caminos de
+> los infinitos laberintos que implica programar, se detenga a leer.
+>
+> *It is only natural that the great brain — the one charged with walking
+> the paths of the infinite labyrinths that programming implies — should
+> pause to read.*
+
+<p align="center">
+  <img src="assets/cyborges-borges-standing.png" alt="CyBorges — the automaton standing, holding a glowing orb and a stack of books" width="300">
+</p>
+
+Every agent is a librarian in that library: `delivery` talks with the human,
+the `orchestrator` walks the labyrinth through subagents, `explorer` maps the
+corridors, and `coder`, `tester`, `reviewer`, and `architect` work the shelves.
+Project facts — architecture, rules, commands — are never assumed: they are
+read *on demand* from each project's `docs/`. The full roster is in
+"Available agents" below.
+
 ## Install (per machine)
 
 ```bash
-git clone https://github.com/DaveR-ui/DaverAgent.git ~/.config/opencode
+git clone https://github.com/DaveR-ui/cyborges.git ~/.config/opencode
 ```
 
 There is no separate install step: opencode reads the config directly from the
