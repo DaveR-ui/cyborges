@@ -68,15 +68,14 @@
   },
   "agents": {
     "delivery":     { "model": "opencode-go/deepseek-v4.1-flash" },
-    "interpreter":  { "model": "opencode/deepseek-v4.1-flash-free" },
-    "coder":        { "model": "opencode/deepseek-v4.1-flash-free" },
-    "documenter":   { "model": "opencode/deepseek-v4.1-flash-free" },
+    "coder":        { "model": "opencode-go/deepseek-v4.1-flash" },
+    "architect":    { "model": "opencode-go/deepseek-v4.1-flash" },
+    "interpreter":  { "model": "opencode-go/deepseek-v4.1-flash" },
+    "documenter":   { "model": "opencode-go/deepseek-v4.1-flash" },
+    "analista":     { "model": "opencode-go/deepseek-v4.1-flash" },
+    "orchestrator": { "model": "opencode-go/minimax-m3.1-flash-free" },
     "tester":       { "model": "opencode-go/qwen3.8-flash" },
-    "architect":    { "model": "opencode/deepseek-v4.1-flash-free" },
-    "orchestrator": { "model": "opencode-go/deepseek-v4.1-flash" },
-    "reviewer":     { "model": "opencode-go/mimo-v2.6-flash" },
-    "analista":     { "model": "opencode/deepseek-v4.1-flash-free" },
-    "title":        { "model": "opencode/deepseek-v4.1-flash-free" }
+    "reviewer":     { "model": "opencode-go/mimo-v2.6-flash" }
   },
   "experimental": {
     "subagent_depth": 4

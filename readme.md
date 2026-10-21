@@ -1,8 +1,4 @@
-# CyBorges — Global opencode Configuration
-
-<p align="center">
-  <img src="assets/cyborges-borges-reading.png" alt="CyBorges — a brass automaton in the likeness of Jorge Luis Borges, reading in a library" width="340">
-</p>
+# DaverAgent — Global opencode Configuration
 
 This repository **is** the global configuration of the opencode agent system
 (delivery, orchestrator, coder, tester, …). Clone it into `~/.config/opencode`
@@ -17,41 +13,10 @@ same agents.
   Machine-specific paths (e.g. an MCP server binary) must be provided through a
   gitignored `opencode.local.json` override, never committed here.
 
-## The great brain
-
-This repository is the global configuration of the opencode agent system: the
-agents (delivery, orchestrator, coder, tester, …) and the protocols that
-govern them. It ships no application code — only the conventions by which
-every project on the machine is planned, written, tested, and reviewed.
-
-The name is an homage to **Jorge Luis Borges** — the writer of libraries,
-labyrinths, mirrors, and the vertigo of the infinite. A codebase is built from
-the same material: a prompt forks into paths, some of them dead ends, and the
-work is to walk them without losing the thread. This repository borrows that
-image for its name.
-
-> Es normal que el gran cerebro, el que se encarga de recorrer los caminos de
-> los infinitos laberintos que implica programar, se detenga a leer.
->
-> *It is only natural that the great brain — the one charged with walking
-> the paths of the infinite labyrinths that programming implies — should
-> pause to read.*
-
-<p align="center">
-  <img src="assets/cyborges-borges-standing.png" alt="CyBorges — the automaton standing, holding a glowing orb and a stack of books" width="300">
-</p>
-
-Every agent is a librarian in that library: `delivery` talks with the human,
-the `orchestrator` walks the labyrinth through subagents, `explorer` maps the
-corridors, and `coder`, `tester`, `reviewer`, and `architect` work the shelves.
-Project facts — architecture, rules, commands — are never assumed: they are
-read *on demand* from each project's `docs/`. The full roster is in
-"Available agents" below.
-
 ## Install (per machine)
 
 ```bash
-git clone https://github.com/DaveR-ui/cyborges.git ~/.config/opencode
+git clone https://github.com/DaveR-ui/DaverAgent.git ~/.config/opencode
 ```
 
 There is no separate install step: opencode reads the config directly from the
@@ -83,7 +48,7 @@ path. The read tool does not expand `~`.
 
 ```
 ~/.config/opencode/              # == this repository
-├── opencode.json                # Top-level runtime config + built-in `agents.title` model slot
+├── opencode.json                # Runtime config + per-agent `agents.<id>.model` map
 ├── readme.md                    # This file
 │
 ├── agents/                      # FLAT global agents (the runtime scans agents/*.md)
@@ -120,9 +85,9 @@ Defined in `agents/<id>.md` (`subagent` mode, except `delivery` which is
 `primary`). Invoked from `delivery` or `orchestrator` via the subagent tool.
 
 This table owns the **purposes** (all agents, including `delivery`, `orchestrator`
-and `interpreter`). The dispatch contract — structured returns and the
-model-independence dispatch rule — is the authoritative table in
-`agents/orchestrator.md` → `## Available Subagents`; it is not duplicated here.
+and `interpreter`). The dispatch contract — structured returns and the per-seat
+dispatch rules — is the authoritative table in `agents/orchestrator.md` →
+`## Available Subagents`; it is not duplicated here.
 
 | Agent | Purpose |
 |---|---|
@@ -138,18 +103,15 @@ model-independence dispatch rule — is the authoritative table in
 | `interpreter` | Normalizes the prompt (Step 0) and inspects a single image. |
 | `documenter` | Writes/maintains `docs/`. Returns `DocumenterOutput`. |
 
-Model lives in **each agent's frontmatter**
-(`agents/<id>.md`). Changing a model = editing the agent's frontmatter and
-restarting opencode. Without a declared `model:`, a subagent inherits the model
-of the primary agent that invokes it. `opencode.json` carries the built-in
-`agents.title.model` slot (title generation, and — by orchestrator convention —
-the cheap, different-family slot read at dispatch time for `reviewer`/`analista`
-and every Typed-Decision Panel panelist). The orchestrator dispatches those seats
-with the model configured at `agents.title.model`, a different model family from
-the primary, so the independent second opinions stay independent. Invariant: that
-slot must stay cheap and from a *different model family* than the primary — if it
-is pointed at a same-family model, the second opinions silently degrade to a
-monoculture.
+Each agent's model is set **manually by the operator** at `opencode.json` →
+`agents.<id>.model` — an entry per configured agent id. Changing a model =
+editing that entry and restarting opencode. A `model:` in an agent's frontmatter
+(`agents/<id>.md`) remains an optional override; a seat with no model configured
+— neither in `opencode.json` nor in its frontmatter — inherits the model of the
+primary agent that invokes it. The orchestrator does not override a model at
+dispatch time: `reviewer` and `analista` stay independent second opinions in
+*what they check*, not in which model family runs them. An explicit model
+supplied in the handoff wins.
 
 ## Protocols
 
@@ -234,22 +196,24 @@ Standards live in `code-lang/` and are loaded on demand by
 
 ## Updating the config
 
-- **Change an agent's model** → edit the frontmatter of `agents/<id>.md`
-  (`model`), then restart opencode.
+- **Change an agent's model** → edit `opencode.json` → `agents.<id>.model`, then
+  restart opencode. A frontmatter `model:` in `agents/<id>.md` is an optional
+  override.
 - **Change an agent's definition** (prompt, tools, permissions, schema) → edit
   `agents/<id>.md`.
 - **Add an agent** → create `agents/<id>.md`. Required frontmatter: `description`
   and `mode`. Optional frontmatter: `model`, `permission`,
-  `output_schema` — without a declared `model:`, the subagent inherits the
-  invoking primary's model (see "Available agents" above). Then:
+  `output_schema` — a frontmatter `model:` is an optional override; a seat with
+  no model configured — neither in `opencode.json` nor in its frontmatter —
+  inherits the invoking primary's model (see "Available agents" above). Then:
   - grant the new agent in `permission.task` in the delegating agents
     (`agents/delivery.md` / `agents/orchestrator.md`) — otherwise the new agent
     is never reachable;
   - if you declare `output_schema: ./<id>.schema.json`, also create the sibling
     `agents/<id>.schema.json`.
-  Do not add a per-agent block to `opencode.json`; it carries only the built-in
-  `agents.title.model` slot, and per-agent `model` stays in each
-  agent's frontmatter.
+  Add an `agents.<id>.model` entry in `opencode.json` for the new agent so its
+  model is explicit, and keep every other per-agent field (`description`,
+  `mode`, `permission`, `output_schema`) in the agent's frontmatter.
 - **Update the global install** → `git pull` in the `~/.config/opencode` clone.
 
 ## Validating the config

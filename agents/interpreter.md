@@ -119,6 +119,6 @@ Image handling through the packet (schema unchanged): an image inspection task f
 
 ### Model and cost discipline
 
-- Model is inherited from the invoking primary agent (model field omitted in frontmatter). You normalize prompts and inspect single images, you do not need a heavy reasoning tier. Do not switch to a more expensive model on your own.
+- Your model is the one the operator configured for this seat at `opencode.json` → `agents.interpreter.model`; a frontmatter `model:` would be an optional override. You normalize prompts and inspect single images, you do not need a heavy reasoning tier. Do not switch to a more expensive model on your own.
 - No fallback configured. If the primary is unavailable, the runtime surfaces the error. Do not escalate further.
 - Keep your output under ~300 words unless the human asked for verbatim normalization (output length, not language — the packet stays English).

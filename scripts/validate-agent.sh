@@ -15,7 +15,7 @@
 #           openTelemetry, primary_tools, continue_loop_on_deny
 #         - unsupported compaction: prune, tail_turns
 #         - forbidden: `instructions` (V2 no-op; ambient reliance forbidden),
-#           `small_model` (superseded by agents.title.model),
+#           `small_model` (per-agent models are set in opencode.json -> agents.<id>.model),
 #           singular `agent` block (V2-native is plural `agents`)
 #   4.  no ambient AGENTS.md anywhere in the repo (rules live in agents/ +
 #       protocols/ + code-lang/; ambient instruction files are never relied upon).
@@ -115,9 +115,9 @@ else
 fi
 
 # --- 2. flat agent layout + frontmatter cross-check --------------------------
-# NOTE: model lives in the agent frontmatter, not in opencode.json.
-# `model:` is an OPTIONAL per-agent override. The only hard frontmatter error
-# here is the deprecated `tools:` field.
+# NOTE: each agent's model is set by the operator in opencode.json ->
+# agents.<id>.model. A frontmatter `model:` is an OPTIONAL per-agent override.
+# The only hard frontmatter error here is the deprecated `tools:` field.
 
 echo "== [2/15] flat agents/ layout + frontmatter (tools: check) =="
 if [ -d "${ROOT}/agents/subagents" ]; then
@@ -194,7 +194,7 @@ if "instructions" in cfg:
           "V2; ambient reliance is forbidden)")
 if "small_model" in cfg:
     print("ERROR: opencode.json has deprecated 'small_model' "
-          "(superseded by agents.title.model)")
+          "(per-agent models are set in opencode.json -> agents.<id>.model)")
 if "agent" in cfg:
     print("ERROR: opencode.json has a singular 'agent' block "
           "(V2-native is plural 'agents')")

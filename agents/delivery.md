@@ -70,8 +70,8 @@ or assess the exact schema manually. No scratch return files and no fabricated v
 | **Project documentation** | `docs/` | Canonical project info, context, architecture, conventions |
 | **Project entry point** | `docs/project.md` | Project metadata, stack, commands, domain entities, Slices table |
 | **Context (strategic docs)** | `docs/context/` | Architecture, rules, business logic, strategies |
-| **Agent runtime config** | `opencode.json` (repo root) | Top-level runtime knobs only: `default_agent`, `compaction`, `model` (the default/inherited model), global `permissions` (V2 native array), `experimental` (e.g. `subagent_depth`), `references`, and the built-in `agents.title.model` slot (title generation; also read at dispatch time by the orchestrator as the model-independence slot for `reviewer`/`analista` — see `agents/orchestrator.md`). **No per-agent config** — each agent's `description`, `mode`, `permission`, `output_schema` and optional `model` live in its `.md` frontmatter. |
-| **Agent definitions** | `agents/` | System prompts per agent (the runtime loads one file per agent). `model` is optional (omitted = inherited from primary) |
+| **Agent runtime config** | `opencode.json` (repo root) | Runtime knobs: `default_agent`, `compaction`, `model` (the default/inherited model), global `permissions` (V2 native array), `experimental` (e.g. `subagent_depth`), `references`, and the per-agent `agents.<id>.model` map (each configured agent's model is set manually by the operator). The remaining per-agent fields — `description`, `mode`, `permission`, `output_schema` — live in the agent's `.md` frontmatter. |
+| **Agent definitions** | `agents/` | System prompts per agent (the runtime loads one file per agent). A frontmatter `model:` is an optional override; a seat with no model configured — neither in `opencode.json` nor in its frontmatter — inherits the invoking primary's model |
 | **Agent protocols** | `protocols/` | Conventions the agent system operates by (this folder) |
 
 **Routing:**
@@ -81,7 +81,7 @@ or assess the exact schema manually. No scratch return files and no fabricated v
 - "Need project context" -> read `docs/project.md` + `docs/context/` directly (delegate coordinated doc maintenance to `documenter`).
 - "Image attached and I need to describe / OCR / read it" -> delegate to `interpreter` (one image, one focused question).
 
-**Model priority:** repo agents keep per-agent `model` in their frontmatter (`agents/<id>.md`); `model` is optional — when omitted the subagent inherits the invoking primary agent's model (per `validate-agent.sh` and `subagent-spec-template.md`). `opencode.json`'s model entries are the top-level `model` (the default/inherited model) and the built-in `agents.title.model` (title-generation slot; also read at dispatch time by the orchestrator as the model-independence slot — see `agents/orchestrator.md`); neither is a per-agent override. To change a model, edit the agent's frontmatter and restart opencode.
+**Model configuration:** each agent's model is set manually by the operator at `opencode.json` → `agents.<id>.model` (an entry per configured agent id); the top-level `model` is the default/inherited model. A `model:` in the agent's frontmatter (`agents/<id>.md`) remains an optional override, and a seat with no model configured — neither in `opencode.json` nor in its frontmatter — inherits the invoking primary agent's model (per `validate-agent.sh` and `subagent-spec-template.md`). The orchestrator does not override a model at dispatch time; an explicit model supplied in the handoff wins. To change a model, edit `opencode.json` and restart opencode.
 
 ## Agent-system changes require review
 
