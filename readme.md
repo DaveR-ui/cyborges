@@ -1,4 +1,4 @@
-# DaverAgent — Global opencode Configuration
+# CyBorges — Global opencode Configuration
 
 This repository **is** the global configuration of the opencode agent system
 (delivery, orchestrator, coder, tester, …). Clone it into `~/.config/opencode`
@@ -16,7 +16,7 @@ same agents.
 ## Install (per machine)
 
 ```bash
-git clone https://github.com/DaveR-ui/DaverAgent.git ~/.config/opencode
+git clone https://github.com/Nijnamovich/cyborges.git ~/.config/opencode
 ```
 
 There is no separate install step: opencode reads the config directly from the
